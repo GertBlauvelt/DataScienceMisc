@@ -64,7 +64,7 @@ This information is stored in the `clean_test` variable, which takes on the foll
 
 ```{r}
 bechdel90_13 %>%
-  group_by(ok) %>%
+  group_by(clean_test) %>%
   summarise(
     med_budget = median(budget_2013),
     med_domgross = median(domgross_2013, na.rm = TRUE),
@@ -98,7 +98,7 @@ ggplot(data = bechdel90_13,
   labs(
     title = "Return on investment vs. Bechdel test result",
     x = "Detailed Bechdel result",
-    y = "___",
+    y = "Return on Investment",
     color = "Binary Bechdel result"
     )
 ```
@@ -111,7 +111,7 @@ bechdel90_13 %>%
   select(title, budget_2013, domgross_2013, year)
 ```
 
-Zooming in on the movies with `roi < ___` provides a better view of how the medians across the categories compare:
+Zooming in on the movies with `roi < 15` provides a better view of how the medians across the categories compare:
 
 ```{r}
 #| warning: false
@@ -120,7 +120,7 @@ ggplot(data = bechdel90_13, mapping = aes(x = clean_test, y = roi, color = binar
   geom_boxplot() +
   labs(
     title = "Return on investment vs. Bechdel test result",
-    subtitle = "___", # Something about zooming in to a certain level
+    subtitle = "roi below 15 (and I guess a tiny little bit above 15 too)", # Something about zooming in to a certain level
     x = "Detailed Bechdel result",
     y = "Return on investment",
     color = "Binary Bechdel result"
