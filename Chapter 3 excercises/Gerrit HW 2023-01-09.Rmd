@@ -45,9 +45,8 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point(mapping = aes(color=drv)) + 
   geom_smooth(se = FALSE, mapping = aes(linetype = drv))
-```
-``` {r} #i got tired of re-knitting the whole document over and over, so here we are
-library(tidyverse)
+
+
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_point(color = "white", size = 5)+
   geom_point(aes (color = drv), size = 2 )
