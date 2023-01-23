@@ -1,13 +1,11 @@
----
-title: "HW 01 (?) - Airbnb listings in Edinburgh"
-author: "Gerrit"
-date: "2023-01-19"
-output: github_document
----
+HW 01 (?) - Airbnb listings in Edinburgh
+================
+Gerrit
+2023-01-19
 
 ## Load packages and data
 
-```{r load-packages, message = FALSE}
+``` r
 library(tidyverse)
 library(dsbox)
 ```
@@ -16,7 +14,7 @@ library(dsbox)
 
 ### Exercise 1
 
-there are `r nrow(edibnb)` entries in the data set.
+there are 13245 entries in the data set.
 
 ### Exercise 2
 
@@ -26,7 +24,7 @@ each row represesnts a different AirBNB in Edinurgh.
 
 Remove this text, and add your answer for Exercise 3 here.
 
-```{r prices-neighbourhoods}
+``` r
 # remove this comment and add the code for Exercise 3 here
 ```
 
@@ -34,15 +32,15 @@ Remove this text, and add your answer for Exercise 3 here.
 
 Remove this text, and add your answer for Exercise 4 here.
 
-```{r top-5-median}
+``` r
 # remove this comment and add the code for Exercise 4 here
 ```
 
-```{r top-5-median-plot}
+``` r
 # remove this comment and add the code for Exercise 4 here
 ```
 
-```{r top-5-median-summary-stats}
+``` r
 # remove this comment and add the code for Exercise 4 here
 ```
 
@@ -50,6 +48,6 @@ Remove this text, and add your answer for Exercise 4 here.
 
 Remove this text, and add your answer for Exercise 5 here.
 
-```{r review-scores-rating}
+``` r
 # remove this comment and add the code for Exercise 5 here
 ```
