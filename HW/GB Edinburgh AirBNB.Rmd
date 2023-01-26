@@ -28,7 +28,7 @@ facet wrapped to 4 rows, since it seemed to make the graphs large enough to be v
 
 ```{r prices-neighbourhoods}
 ggplot(data = edibnb %>% filter(price < 300), mapping = aes(x = price))+
-  geom_histogram(stat = "bin", binwidth = 20)+
+  geom_histogram(binwidth = 20)+
   facet_wrap(~neighbourhood, nrow = 4)
 ```
 

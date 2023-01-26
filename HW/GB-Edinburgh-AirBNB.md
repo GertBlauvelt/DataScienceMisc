@@ -28,7 +28,7 @@ data is actually large enough to compare.
 
 ``` r
 ggplot(data = edibnb %>% filter(price < 300), mapping = aes(x = price))+
-  geom_histogram(stat = "bin", binwidth = 20)+
+  geom_histogram(binwidth = 20)+
   facet_wrap(~neighbourhood, nrow = 4)
 ```
 

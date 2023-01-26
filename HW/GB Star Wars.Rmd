@@ -39,10 +39,10 @@ ggplot(starwars,
        aes(x = height, y = mass, color = gender, size = birth_year)) +
   geom_point(color = "#30509C") +
   labs(
-    #title = "___",
-    #x = "___", 
-    #y = "___",
-    #___
+    title = "Mass vs Height",
+    x = "Character Height", 
+    y = "Character Mass",
+    size = "Birth Year"
     )
 ```
 
@@ -52,16 +52,27 @@ ggplot(starwars,
 
 ```{r}
 #| label: histogram
-#| eval: false
+#| eval: true
 
-ggplot(starwars, aes(___)) +
-  geom___
+ggplot(starwars, aes(x = -birth_year, y =)) +
+  geom_histogram(stat = "bin", binwidth = 10)
 ```
 
 5.  Pick a numerical variable and a categorical variable and make a visualization (you pick the type!) to visualization the relationship between the two variables. Along with your code and output, provide an interpretation of the visualization.
 
 ```{r}
 #| label: num-cat
+
+
+ggplot(data = starwars, mapping = aes(x = skin_color, y = eye_color, color = hair_color)) + 
+  geom_point()
+
+ggplot(data = starwars, mapping = aes(x = skin_color, y = eye_color)) + 
+  geom_point()
+
+ggplot(data=starwars, mapping = aes(y = as.character(starships), x = sex))+
+  geom_point()
+       
 
 ```
 
