@@ -1,7 +1,7 @@
 ---
 title: "HW 01 (?) - Airbnb listings in Edinburgh"
 author: "Gerrit"
-date: "2023-01-19"
+date: "started 2023-01-19, currently `r Sys.Date()`"
 output: github_document
 ---
 

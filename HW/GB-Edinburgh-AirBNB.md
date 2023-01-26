@@ -1,7 +1,7 @@
 HW 01 (?) - Airbnb listings in Edinburgh
 ================
 Gerrit
-2023-01-19
+started 2023-01-19, currently 2023-01-26
 
 ## Load packages and data
 
