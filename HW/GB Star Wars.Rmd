@@ -63,25 +63,39 @@ ggplot(starwars, aes(x = -birth_year, y =)) +
 ```{r}
 #| label: num-cat
 
+#Jabba is a really annoying outlier that makes it hard to see anything else on the graph with much detail, so this is a little filter to drastically improve this dataset in every single way
 
-ggplot(data = starwars, mapping = aes(x = skin_color, y = eye_color, color = hair_color)) + 
-  geom_point()
+starwarsnojabba <- starwars%>%
+  filter(name != "Jabba Desilijic Tiure")
 
-ggplot(data = starwars, mapping = aes(x = skin_color, y = eye_color)) + 
-  geom_point()
+#I wanted to see what a jitter plot does, turns out its just a point plot, but with a little bit of randomness added, so that for very dense data, the points are slightly more spread out
 
-ggplot(data=starwars, mapping = aes(y = as.character(starships), x = sex))+
-  geom_point()
+ggplot(data = starwarsnojabba, mapping = aes(x = mass, y = height, color = sex)) + 
+  geom_jitter()
+
        
 
 ```
 
-Interpretation goes here...
+from this graph, we can see that:
+
+A) there are way more males than females in this data set
+
+B) There is a fairly linear connection between height and mass, as one increase, so does the other, unsurprisingly.
+
+C) Males have a broader range, with the cluster of the shortest and lightest characters being almost exclusively male. The tallest and heaviest are also males. 
+
+E) Withing the main cluster of characters, we can see that males are pretty much all heavier than the female characters, but that they aren't that much taller.
 
 6.  Pick a single categorical variable from the data set and make a bar plot of its distribution.
 
 ```{r}
 #| label: barplot
+
+#bar plot for eye color of the characters
+
+ggplot(data = starwarsnojabba, mapping = aes(x = eye_color))+
+  geom_bar()
 
 ```
 
@@ -90,9 +104,12 @@ Interpretation goes here...
 ```{r}
 #| label: cat-cat
 
+ggplot(data = starwars, mapping = aes(color = sex, y = homeworld)) +
+  geom_bar()
+
 ```
 
-Interpretation goes here...
+so basically, there are way more males than females in this data set.  
 
 8.  Pick two numerical variables and two categorical variables and make a visualization that incorporates all of them and provide an interpretation with your answer.
 
