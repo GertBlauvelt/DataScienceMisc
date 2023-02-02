@@ -4,6 +4,14 @@ author: "Gerrit Blauvelt"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+excercises to address:
+5.2.4
+5.3.1
+5.4.1
+5.5.2
+5.6.7
+5.7.1
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -13,3 +21,49 @@ library(tidyverse)
 library(nycflights13)
 
 ```
+
+
+5.2.4
+
+``` {r}
+#All flights that arrived 2 or more hours late
+filter(flights, arr_delay >=120)
+
+#All flights going to Houston, TX (George Bush Intercontinental & William P. Hobby Airports)
+filter(flights, dest == "IAH" | dest == "HOU")
+
+#All flights flown by United, American, or Delta
+filter(flights, carrier %in% c("UA","AA","DL"))
+
+#All flights that departed in "Summer" (July, August, September)
+filter(flights, month %in% c(7, 8, 9))
+
+#Flights which departed on time, but arrive 2 or more hours late
+filter(flights, dep_delay <= 0 & arr_delay >= 120)
+
+#Flights which departed at least 1 hour late, but made up at least 30 minutes in the air
+filter(flights, dep_delay >= 60 & arr_delay <= (dep_delay - 30) )
+
+#Flights which departed from 12am to 6am (I don't like this dataset, it goes 23:59 -> 24:00 -> 00:01. It should go 23:59 -> 00:00 -> 00:01)
+filter(flights, dep_time <= 600)
+
+
+
+```
+
+
+
+Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?
+
+between() checks if a value is between an upper and lower bound. It might be useable for the summer months, and, If I did the midnight to 6am departure differently (if the lowest bound wasn't just 0 already), it would be useful there.
+
+
+How many flights have a missing dep_time? What other variables are missing? What might these rows represent?
+
+there are `r nrow(filter(flights,is.na(dep_time)))` without a departure time
+
+
+
+Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing? Why is `FALSE & NA` not missing? Can you figure out the general rule? (`NA * 0` is a tricky counterexample!)
+
+NA^0 is 1, because anything raised to 0 is 1. For the rest of them I don't entirely understand
