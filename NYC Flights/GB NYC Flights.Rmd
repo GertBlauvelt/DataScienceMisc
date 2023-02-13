@@ -75,6 +75,9 @@ NA^0 is 1, because anything raised to 0 is 1. For the rest of them I don't entir
 #arranged so that flights with NA values are at the top, with the idea that if a flight is going to have any missing values, it will at the very least have a missing arrival time. It could have everything except a missing arrival time (best case scenario it departed and then turned around). For any other variable, there could be an actual value, but there might still be an NA in arr_time that wouldn't get caught sorting by say tail number. 
 arrange(flights, desc(is.na(arr_time)), arr_time)
 
+#arranged by flights that left the latest
+arrange(flights, desc(dep_delay))
+
 #arranged by flights that departed the earliest relative to their scheduled time
 arrange(flights, dep_delay)
 
@@ -87,4 +90,24 @@ arrange(flights, desc(distance))
 #arranged by flights that traveled the shortest
 arrange(flights, distance)
 
+#arranged by tailnumber to see which planes flew the most, for fun
+arrange(flights, tailnum)
 ```
+
+
+**5.4.1**
+``` {r}
+#ways to select dep_time, dep_delay, arr_time, and arr_delay
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, starts_with("arr") | starts_with("dep"))
+
+#what happens if you call the same var multiple times
+#it looks like it just doesn't bother with the repeated calls, and just displays that first one
+select(flights, tailnum, time_hour, tailnum, tailnum, tailnum)
+
+#selecting vars that contain the letter r, because why not
+#select(flights, contains("r"))
+
+arrange(flights, flight == 51 )
+
+arrange(flights, month ==6)
