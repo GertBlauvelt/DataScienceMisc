@@ -67,3 +67,24 @@ there are `r nrow(filter(flights,is.na(dep_time)))` without a departure time
 Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing? Why is `FALSE & NA` not missing? Can you figure out the general rule? (`NA * 0` is a tricky counterexample!)
 
 NA^0 is 1, because anything raised to 0 is 1. For the rest of them I don't entirely understand
+
+
+**5.3.1**
+
+```{r}
+#arranged so that flights with NA values are at the top, with the idea that if a flight is going to have any missing values, it will at the very least have a missing arrival time. It could have everything except a missing arrival time (best case scenario it departed and then turned around). For any other variable, there could be an actual value, but there might still be an NA in arr_time that wouldn't get caught sorting by say tail number. 
+arrange(flights, desc(is.na(arr_time)), arr_time)
+
+#arranged by flights that departed the earliest relative to their scheduled time
+arrange(flights, dep_delay)
+
+#arranged by flights that have the highest speed (distance/time (miles/minute)), descending order, so that fastest speed is at the top
+arrange(flights, desc(distance/air_time))
+
+#arranged by flights the traveled the farthest
+arrange(flights, desc(distance))
+
+#arranged by flights that traveled the shortest
+arrange(flights, distance)
+
+```

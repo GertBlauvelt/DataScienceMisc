@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gerrit Blauvelt" />
 
-<meta name="date" content="2023-02-02" />
+<meta name="date" content="2023-02-09" />
 
 <title>NYC Flights</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">NYC Flights</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
-<h4 class="date">2023-02-02</h4>
+<h4 class="date">2023-02-09</h4>
 
 </div>
 
@@ -518,6 +518,102 @@ figure out the general rule? (<code>NA * 0</code> is a tricky
 counterexample!)</p>
 <p>NA^0 is 1, because anything raised to 0 is 1. For the rest of them I
 don’t entirely understand</p>
+<p><strong>5.3.1</strong></p>
+<pre class="r"><code>#arranged so that flights with NA values are at the top, with the idea that if a flight is going to have any missing values, it will at the very least have a missing arrival time. It could have everything except a missing arrival time (best case scenario it departed and then turned around). For any other variable, there could be an actual value, but there might still be an NA in arr_time that wouldn&#39;t get caught sorting by say tail number. 
+arrange(flights, desc(is.na(arr_time)), arr_time)</code></pre>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     1     1     2016       1930      46      NA    2220      NA EV     
+##  2  2013     1     1       NA       1630      NA      NA    1815      NA EV     
+##  3  2013     1     1       NA       1935      NA      NA    2240      NA AA     
+##  4  2013     1     1       NA       1500      NA      NA    1825      NA AA     
+##  5  2013     1     1       NA        600      NA      NA     901      NA B6     
+##  6  2013     1     2     2041       2045      -4      NA    2359      NA B6     
+##  7  2013     1     2     2145       2129      16      NA      33      NA UA     
+##  8  2013     1     2       NA       1540      NA      NA    1747      NA EV     
+##  9  2013     1     2       NA       1620      NA      NA    1746      NA EV     
+## 10  2013     1     2       NA       1355      NA      NA    1459      NA EV     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+<pre class="r"><code>#arranged by flights that departed the earliest relative to their scheduled time
+arrange(flights, dep_delay)</code></pre>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013    12     7     2040       2123     -43      40    2352      48 B6     
+##  2  2013     2     3     2022       2055     -33    2240    2338     -58 DL     
+##  3  2013    11    10     1408       1440     -32    1549    1559     -10 EV     
+##  4  2013     1    11     1900       1930     -30    2233    2243     -10 DL     
+##  5  2013     1    29     1703       1730     -27    1947    1957     -10 F9     
+##  6  2013     8     9      729        755     -26    1002     955       7 MQ     
+##  7  2013    10    23     1907       1932     -25    2143    2143       0 EV     
+##  8  2013     3    30     2030       2055     -25    2213    2250     -37 MQ     
+##  9  2013     3     2     1431       1455     -24    1601    1631     -30 9E     
+## 10  2013     5     5      934        958     -24    1225    1309     -44 B6     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+<pre class="r"><code>#arranged by flights that have the highest speed (distance/time (miles/minute)), descending order, so that fastest speed is at the top
+arrange(flights, desc(distance/air_time))</code></pre>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     5    25     1709       1700       9    1923    1937     -14 DL     
+##  2  2013     7     2     1558       1513      45    1745    1719      26 EV     
+##  3  2013     5    13     2040       2025      15    2225    2226      -1 EV     
+##  4  2013     3    23     1914       1910       4    2045    2043       2 EV     
+##  5  2013     1    12     1559       1600      -1    1849    1917     -28 DL     
+##  6  2013    11    17      650        655      -5    1059    1150     -51 DL     
+##  7  2013     2    21     2355       2358      -3     412     438     -26 B6     
+##  8  2013    11    17      759        800      -1    1212    1255     -43 AA     
+##  9  2013    11    16     2003       1925      38      17      36     -19 DL     
+## 10  2013    11    16     2349       2359     -10     402     440     -38 B6     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+<pre class="r"><code>#arranged by flights the traveled the farthest
+arrange(flights, desc(distance))</code></pre>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     1     1      857        900      -3    1516    1530     -14 HA     
+##  2  2013     1     2      909        900       9    1525    1530      -5 HA     
+##  3  2013     1     3      914        900      14    1504    1530     -26 HA     
+##  4  2013     1     4      900        900       0    1516    1530     -14 HA     
+##  5  2013     1     5      858        900      -2    1519    1530     -11 HA     
+##  6  2013     1     6     1019        900      79    1558    1530      28 HA     
+##  7  2013     1     7     1042        900     102    1620    1530      50 HA     
+##  8  2013     1     8      901        900       1    1504    1530     -26 HA     
+##  9  2013     1     9      641        900    1301    1242    1530    1272 HA     
+## 10  2013     1    10      859        900      -1    1449    1530     -41 HA     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+<pre class="r"><code>#arranged by flights that traveled the shortest
+arrange(flights, distance)</code></pre>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
+##  1  2013     7    27       NA        106      NA      NA     245      NA US     
+##  2  2013     1     3     2127       2129      -2    2222    2224      -2 EV     
+##  3  2013     1     4     1240       1200      40    1333    1306      27 EV     
+##  4  2013     1     4     1829       1615     134    1937    1721     136 EV     
+##  5  2013     1     4     2128       2129      -1    2218    2224      -6 EV     
+##  6  2013     1     5     1155       1200      -5    1241    1306     -25 EV     
+##  7  2013     1     6     2125       2129      -4    2224    2224       0 EV     
+##  8  2013     1     7     2124       2129      -5    2212    2224     -12 EV     
+##  9  2013     1     8     2127       2130      -3    2304    2225      39 EV     
+## 10  2013     1     9     2126       2129      -3    2217    2224      -7 EV     
+## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
+## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
 
 
 
