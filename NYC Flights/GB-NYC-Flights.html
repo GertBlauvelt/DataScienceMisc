@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gerrit Blauvelt" />
 
-<meta name="date" content="2023-02-13" />
+<meta name="date" content="2023-02-17" />
 
 <title>NYC Flights</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">NYC Flights</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
-<h4 class="date">2023-02-13</h4>
+<h4 class="date">2023-02-17</h4>
 
 </div>
 
@@ -701,11 +701,37 @@ select(flights, tailnum, time_hour, tailnum, tailnum, tailnum)</code></pre>
 ##  9 N593JB  2013-01-01 06:00:00
 ## 10 N3ALAA  2013-01-01 06:00:00
 ## # … with 336,766 more rows</code></pre>
-<pre class="r"><code>#selecting vars that contain the letter r, because why not
-#select(flights, contains(&quot;r&quot;))
+<pre class="r"><code>#What does &#39;any_of()&#39; do?
+# that&#39;s a great question, what does it do? I don&#39;t really understand the whole vector/character vector thing
 
-arrange(flights, flight == 51 )</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
+#Does the output of this code surprise me?
+select(flights, contains(&quot;TIME&quot;))</code></pre>
+<pre><code>## # A tibble: 336,776 × 6
+##    dep_time sched_dep_time arr_time sched_arr_time air_time time_hour          
+##       &lt;int&gt;          &lt;int&gt;    &lt;int&gt;          &lt;int&gt;    &lt;dbl&gt; &lt;dttm&gt;             
+##  1      517            515      830            819      227 2013-01-01 05:00:00
+##  2      533            529      850            830      227 2013-01-01 05:00:00
+##  3      542            540      923            850      160 2013-01-01 05:00:00
+##  4      544            545     1004           1022      183 2013-01-01 05:00:00
+##  5      554            600      812            837      116 2013-01-01 06:00:00
+##  6      554            558      740            728      150 2013-01-01 05:00:00
+##  7      555            600      913            854      158 2013-01-01 06:00:00
+##  8      557            600      709            723       53 2013-01-01 06:00:00
+##  9      557            600      838            846      140 2013-01-01 06:00:00
+## 10      558            600      753            745      138 2013-01-01 06:00:00
+## # … with 336,766 more rows</code></pre>
+<pre class="r"><code>#I don&#39;t think it confuses me. It&#39;s clearly not case sensitive, and has given me a chart of every value for which the variable contains &quot;time&quot;.</code></pre>
+<p><strong>5.5.2</strong></p>
+<pre class="r"><code>#convert dep_time and sched_dep_time to number of minutes since midnight
+mutate(flights,
+  dep_hour = dep_time %/% 100,
+  dep_minute = dep_time %% 100,
+  sd_hour = sched_dep_time %/% 100,
+  sd_minute = sched_dep_time %% 100,
+  dep_time_mins = dep_hour*60 + dep_minute,
+  sched_dep_time_mins = sd_hour*60 + sd_minute,
+)</code></pre>
+<pre><code>## # A tibble: 336,776 × 25
 ##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
 ##  1  2013     1     1      517        515       2     830     819      11 UA     
@@ -718,28 +744,36 @@ arrange(flights, flight == 51 )</code></pre>
 ##  8  2013     1     1      557        600      -3     709     723     -14 EV     
 ##  9  2013     1     1      557        600      -3     838     846      -8 B6     
 ## 10  2013     1     1      558        600      -2     753     745       8 AA     
-## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## # … with 336,766 more rows, 15 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
-## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
-<pre class="r"><code>arrange(flights, month ==6)</code></pre>
-<pre><code>## # A tibble: 336,776 × 19
-##     year month   day dep_time sched_de…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  
-##  1  2013     1     1      517        515       2     830     819      11 UA     
-##  2  2013     1     1      533        529       4     850     830      20 UA     
-##  3  2013     1     1      542        540       2     923     850      33 AA     
-##  4  2013     1     1      544        545      -1    1004    1022     -18 B6     
-##  5  2013     1     1      554        600      -6     812     837     -25 DL     
-##  6  2013     1     1      554        558      -4     740     728      12 UA     
-##  7  2013     1     1      555        600      -5     913     854      19 B6     
-##  8  2013     1     1      557        600      -3     709     723     -14 EV     
-##  9  2013     1     1      557        600      -3     838     846      -8 B6     
-## 10  2013     1     1      558        600      -2     753     745       8 AA     
-## # … with 336,766 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names
-## #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, dep_hour &lt;dbl&gt;, dep_minute &lt;dbl&gt;,
+## #   sd_hour &lt;dbl&gt;, sd_minute &lt;dbl&gt;, dep_time_mins &lt;dbl&gt;,
+## #   sched_dep_time_mins &lt;dbl&gt;, and abbreviated variable names ¹​sched_dep_time,
+## #   ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</code></pre>
+<pre class="r"><code>#compare air_time with arr - dep
+mutate(flights,
+       arr_hour = arr_time %/% 100,
+       arr_minute = arr_time %% 100,
+       arr_time_mins = arr_hour*60 + arr_minute,
+          dep_hour = dep_time %/% 100,
+          dep_minute = dep_time %% 100,
+          dep_time_mins = dep_hour*60 + dep_minute,
+       time_between_gates = arr_time_mins - dep_time_mins) %&gt;% 
+  select(flight, carrier, origin, dest, air_time, time_between_gates)</code></pre>
+<pre><code>## # A tibble: 336,776 × 6
+##    flight carrier origin dest  air_time time_between_gates
+##     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;              &lt;dbl&gt;
+##  1   1545 UA      EWR    IAH        227                193
+##  2   1714 UA      LGA    IAH        227                197
+##  3   1141 AA      JFK    MIA        160                221
+##  4    725 B6      JFK    BQN        183                260
+##  5    461 DL      LGA    ATL        116                138
+##  6   1696 UA      EWR    ORD        150                106
+##  7    507 B6      EWR    FLL        158                198
+##  8   5708 EV      LGA    IAD         53                 72
+##  9     79 B6      JFK    MCO        140                161
+## 10    301 AA      LGA    ORD        138                115
+## # … with 336,766 more rows</code></pre>
 
 
 

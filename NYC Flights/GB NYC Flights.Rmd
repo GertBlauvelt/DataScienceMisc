@@ -105,9 +105,37 @@ select(flights, starts_with("arr") | starts_with("dep"))
 #it looks like it just doesn't bother with the repeated calls, and just displays that first one
 select(flights, tailnum, time_hour, tailnum, tailnum, tailnum)
 
-#selecting vars that contain the letter r, because why not
-#select(flights, contains("r"))
+#What does 'any_of()' do?
+# that's a great question, what does it do? I don't really understand the whole vector/character vector thing
 
-arrange(flights, flight == 51 )
+#Does the output of this code surprise me?
+select(flights, contains("TIME"))
+#I don't think it confuses me. It's clearly not case sensitive, and has given me a chart of every value for which the variable contains "time".
+```
 
-arrange(flights, month ==6)
+
+**5.5.2**
+```{r}
+#convert dep_time and sched_dep_time to number of minutes since midnight
+mutate(flights,
+  dep_hour = dep_time %/% 100,
+  dep_minute = dep_time %% 100,
+  sd_hour = sched_dep_time %/% 100,
+  sd_minute = sched_dep_time %% 100,
+  dep_time_mins = dep_hour*60 + dep_minute,
+  sched_dep_time_mins = sd_hour*60 + sd_minute,
+)
+
+#compare air_time with arr - dep
+mutate(flights,
+       arr_hour = arr_time %/% 100,
+       arr_minute = arr_time %% 100,
+       arr_time_mins = arr_hour*60 + arr_minute,
+          dep_hour = dep_time %/% 100,
+          dep_minute = dep_time %% 100,
+          dep_time_mins = dep_hour*60 + dep_minute,
+       time_between_gates = arr_time_mins - dep_time_mins) %>% 
+  select(flight, carrier, origin, dest, air_time, time_between_gates)
+
+
+```
