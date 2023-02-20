@@ -4,27 +4,26 @@ author: "Gerrit Blauvelt"
 date: "`r Sys.Date()`"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(tidyverse)
+library(rvest)
 ```
 
-## R Markdown
+Step 1. Read the whole page
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+page <- read_html("https://www.imdb.com/chart/top/")
+page
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+typeof(page) #in the slideshow, it says this is a list, not a closure
+class(page) #i've gotten lost here --- yup this has turned into an issue
 ```
 
-## Including Plots
+Step 2. Scrape the nodes
 
-You can also embed plots, for example:
+```{r}
+page %>%
+  html_nodes(".titleColumn a")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
