@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-02-21" />
 
-<title>Web Scraping IMDb top 250</title>
+<title>Amtrak route date</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,7 +350,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Web Scraping IMDb top 250</h1>
+<h1 class="title toc-ignore">Amtrak route date</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
 <h4 class="date">2023-02-21</h4>
 
@@ -373,77 +373,11 @@ display: none;
 ## The following object is masked from &#39;package:readr&#39;:
 ## 
 ##     guess_encoding</code></pre>
-<p>Step 1. Read the whole page</p>
-<pre class="r"><code>page &lt;- read_html(&quot;https://www.imdb.com/chart/top/&quot;)
-page</code></pre>
-<pre><code>## {html_document}
-## &lt;html xmlns:og=&quot;http://ogp.me/ns#&quot; xmlns:fb=&quot;http://www.facebook.com/2008/fbml&quot;&gt;
-## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8 ...
-## [2] &lt;body id=&quot;styleguide-v2&quot; class=&quot;fixed&quot;&gt;\n            &lt;img height=&quot;1&quot; widt ...</code></pre>
-<pre class="r"><code>typeof(page) #in the slideshow, it says this is a list, not a closure</code></pre>
-<pre><code>## [1] &quot;list&quot;</code></pre>
-<pre class="r"><code>class(page) #i&#39;ve gotten lost here --- yup this has turned into an issue --- wait now these are both saying what they should be saying???</code></pre>
-<pre><code>## [1] &quot;xml_document&quot; &quot;xml_node&quot;</code></pre>
-<p>Step 2. Scrape the nodes</p>
-<pre class="r"><code>titles &lt;- page %&gt;%
-  html_nodes(&quot;.titleColumn a&quot;) %&gt;%
-  html_text()</code></pre>
-<p>Step 3. Year the movies were made</p>
-<pre class="r"><code>years &lt;- page %&gt;%
-  html_nodes(&quot;.secondaryInfo&quot;) %&gt;%
-  html_text() %&gt;% #but its a char not a numerical value, since there are parenthesis, so we need to remove the parenthesis
-  str_remove(&quot;\\(&quot;) %&gt;% #\\ is escape character 
-  str_remove(&quot;\\)&quot;) %&gt;%
-  as.numeric()</code></pre>
-<p>Step 4. Scrape the IMDb ratings</p>
-<pre class="r"><code>ratings &lt;- page %&gt;%
-  html_nodes(&quot;strong&quot;)%&gt;%
-  html_text() %&gt;%
-  as.numeric()</code></pre>
-<p>Step 5. done with web scraping, time for tibble!</p>
-<pre class="r"><code>imdb_top_250 &lt;- tibble(
-  title = titles,
-  year = years,
-  rating = ratings
-)
-
-imdb_top_250</code></pre>
-<pre><code>## # A tibble: 250 × 3
-##    title                                              year rating
-##    &lt;chr&gt;                                             &lt;dbl&gt;  &lt;dbl&gt;
-##  1 The Shawshank Redemption                           1994    9.2
-##  2 The Godfather                                      1972    9.2
-##  3 The Dark Knight                                    2008    9  
-##  4 The Godfather Part II                              1974    9  
-##  5 12 Angry Men                                       1957    9  
-##  6 Schindler&#39;s List                                   1993    8.9
-##  7 The Lord of the Rings: The Return of the King      2003    8.9
-##  8 Pulp Fiction                                       1994    8.8
-##  9 The Lord of the Rings: The Fellowship of the Ring  2001    8.8
-## 10 The Good, the Bad and the Ugly                     1966    8.8
-## # … with 240 more rows</code></pre>
-<pre class="r"><code>imdb_top_250 &lt;- imdb_top_250 %&gt;%
-  mutate(rank = 1:nrow(imdb_top_250))%&gt;%
-  relocate(rank)
-#adds a rank variable, which could have also just been scraped.
-
-imdb_top_250 %&gt;%
-  filter(rating == 8) %&gt;%
-  print()</code></pre>
-<pre><code>## # A tibble: 42 × 4
-##     rank title           year rating
-##    &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;
-##  1   209 Hotel Rwanda    2004      8
-##  2   210 Ford v Ferrari  2019      8
-##  3   211 Rocky           1976      8
-##  4   212 Platoon         1986      8
-##  5   213 Ratatouille     2007      8
-##  6   214 Spotlight       2015      8
-##  7   215 The Terminator  1984      8
-##  8   216 Logan           2017      8
-##  9   217 Stand by Me     1986      8
-## 10   218 Rush            2013      8
-## # … with 32 more rows</code></pre>
+<pre class="r"><code>library(robotstxt)
+paths_allowed(&quot;https://en.wikipedia.org/&quot;)</code></pre>
+<pre><code>## 
+ en.wikipedia.org</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 
 
 

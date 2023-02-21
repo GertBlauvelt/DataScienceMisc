@@ -16,14 +16,52 @@ page <- read_html("https://www.imdb.com/chart/top/")
 page
 
 typeof(page) #in the slideshow, it says this is a list, not a closure
-class(page) #i've gotten lost here --- yup this has turned into an issue
+class(page) #i've gotten lost here --- yup this has turned into an issue --- wait now these are both saying what they should be saying???
 ```
 
 Step 2. Scrape the nodes
 
 ```{r}
-page %>%
-  html_nodes(".titleColumn a")
+titles <- page %>%
+  html_nodes(".titleColumn a") %>%
+  html_text()
+```
 
+Step 3. Year the movies were made
+```{r}
+years <- page %>%
+  html_nodes(".secondaryInfo") %>%
+  html_text() %>% #but its a char not a numerical value, since there are parenthesis, so we need to remove the parenthesis
+  str_remove("\\(") %>% #\\ is escape character 
+  str_remove("\\)") %>%
+  as.numeric()
 
+```
+Step 4. Scrape the IMDb ratings
+```{r}
+ratings <- page %>%
+  html_nodes("strong")%>%
+  html_text() %>%
+  as.numeric()
+```
+
+Step 5. done with web scraping, time for tibble!
+
+```{r}
+imdb_top_250 <- tibble(
+  title = titles,
+  year = years,
+  rating = ratings
+)
+
+imdb_top_250
+
+imdb_top_250 <- imdb_top_250 %>%
+  mutate(rank = 1:nrow(imdb_top_250))%>%
+  relocate(rank)
+#adds a rank variable, which could have also just been scraped.
+
+imdb_top_250 %>%
+  filter(rating == 8) %>%
+  print()
 ```
