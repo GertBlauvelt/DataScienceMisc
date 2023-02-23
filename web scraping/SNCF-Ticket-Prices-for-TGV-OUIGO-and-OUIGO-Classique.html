@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-02-23" />
 
-<title>Amtrak route date</title>
+<title>SNCF ticket prices for TGV OUIGO et OUIGO Classique</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,7 +350,8 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Amtrak route date</h1>
+<h1 class="title toc-ignore">SNCF ticket prices for TGV OUIGO et OUIGO
+Classique</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
 <h4 class="date">2023-02-23</h4>
 
@@ -374,14 +375,20 @@ display: none;
 ## 
 ##     guess_encoding</code></pre>
 <pre class="r"><code>library(robotstxt)
-paths_allowed(&quot;https://reporting.sbb.ch/en/&quot;)</code></pre>
-<pre><code>## reporting.sbb.ch</code></pre>
-<pre><code>## Warning in request_handler_handler(request = request, handler =
-## on_file_type_mismatch, : Event: on_file_type_mismatch</code></pre>
-<pre><code>## Warning in request_handler_handler(request = request, handler =
-## on_suspect_content, : Event: on_suspect_content</code></pre>
-<pre><code>## </code></pre>
+paths_allowed(&quot;https://ressources.data.sncf.com/&quot;)</code></pre>
+<pre><code>## 
+ ressources.data.sncf.com</code></pre>
 <pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>page &lt;- read_html(&quot;https://ressources.data.sncf.com/explore/dataset/tarifs-tgv-inoui-ouigo/table/?refine.transporteur=OUIGO&quot;)
+page</code></pre>
+<pre><code>## {html_document}
+## &lt;html lang=&quot;fr&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8 ...
+## [2] &lt;body class=&quot;&quot;&gt;\n\n        \n&lt;div class=&quot;ods-content&quot;&gt;\n\n    &lt;header cla ...</code></pre>
+<pre class="r"><code>typeof(page)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>class(page)</code></pre>
+<pre><code>## [1] &quot;xml_document&quot; &quot;xml_node&quot;</code></pre>
 
 
 

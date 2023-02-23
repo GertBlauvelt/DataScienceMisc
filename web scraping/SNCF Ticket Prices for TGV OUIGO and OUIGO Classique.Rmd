@@ -1,0 +1,20 @@
+---
+title: "SNCF ticket prices for TGV OUIGO et OUIGO Classique"
+author: "Gerrit Blauvelt"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(robotstxt)
+paths_allowed("https://ressources.data.sncf.com/")
+```
+
+```{r}
+page <- read_html("https://ressources.data.sncf.com/explore/dataset/tarifs-tgv-inoui-ouigo/table/?refine.transporteur=OUIGO")
+page
+
+typeof(page)
+class(page)
