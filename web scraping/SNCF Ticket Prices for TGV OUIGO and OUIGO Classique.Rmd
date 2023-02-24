@@ -13,8 +13,34 @@ paths_allowed("https://ressources.data.sncf.com/")
 ```
 
 ```{r}
+#get the page into r
 page <- read_html("https://ressources.data.sncf.com/explore/dataset/tarifs-tgv-inoui-ouigo/table/?refine.transporteur=OUIGO")
 page
 
 typeof(page)
 class(page)
+
+#operator <- 
+page %>%
+  html_nodes(".odswidget-table__cell:nth-child(2) span") %>%
+  html_text()
+
+
+
+
+
+# ticketprices <- tibble(
+#   company = operator
+# )
+# 
+# ticketprices
+
+  
+  
+# years <- page %>%
+#   html_nodes(".secondaryInfo") %>%
+#   html_text() %>% #but its a char not a numerical value, since there are parenthesis, so we need to remove the parenthesis
+#   str_remove("\\(") %>% #\\ is escape character 
+#   str_remove("\\)") %>%
+#   as.numeric()
+
