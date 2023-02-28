@@ -403,11 +403,10 @@ mta</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <pre class="r"><code>class(mta)</code></pre>
 <pre><code>## [1] &quot;xml_document&quot; &quot;xml_node&quot;</code></pre>
-<pre class="r"><code>amtkRank &lt;- amtkstations %&gt;%
-  html_nodes(&quot;td:nth-child(1)&quot;) %&gt;%
-  html_text() %&gt;%
-  str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()
+<pre class="r"><code># amtkRank &lt;- amtkstations %&gt;%
+#   html_nodes(&quot;tbody th&quot;) %&gt;%
+#   html_text() %&gt;%
+#   str_remove(&quot;\\\n&quot;) %&gt;%
  
 amtkStationName &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(2)&quot;) %&gt;%
@@ -428,10 +427,56 @@ amtkRegion &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(5)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;)
+#https://stackoverflow.com/questions/28129554/in-r-remove-commas-from-a-field-and-have-the-modified-field-remain-part-of-the
+amtk2015 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(6)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  str_remove(&quot;\\,&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(6)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2016 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(7)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(7)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2017 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(8)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(8)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2018 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(9)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(9)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2019 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(10)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(10)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2020 &lt;- amtkstations %&gt;%
+  html_nodes(&quot;td:nth-child(11)&quot;) %&gt;%
+  html_text() %&gt;%
+  str_remove(&quot;\\\n&quot;) %&gt;%
+  as.numeric()</code></pre>
+<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(11)&quot;) %&gt;% html_text() %&gt;% :
+## NAs introduced by coercion</code></pre>
+<pre class="r"><code>amtk2015total &lt;- sum(amtk2015) 
 
-amtkRank</code></pre>
-<pre><code>## numeric(0)</code></pre>
-<pre class="r"><code>amtkStationName</code></pre>
+amtk2015total</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>#amtkRank
+amtkStationName</code></pre>
 <pre><code>##  [1] &quot;Penn Station&quot;              &quot;Washington Union Station&quot; 
 ##  [3] &quot;30th Street Station&quot;       &quot;Chicago Union Station&quot;    
 ##  [5] &quot;South Station&quot;             &quot;Union Station&quot;            
@@ -449,7 +494,44 @@ amtkRank</code></pre>
 <pre class="r"><code>amtkRegion</code></pre>
 <pre><code>##  [1] &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;Midwest&quot;      &quot;New England&quot; 
 ##  [6] &quot;Southwest&quot;    &quot;Southwest&quot;    &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;New England&quot;</code></pre>
-<pre class="r"><code>#   str_remove(&quot;\\\n&quot;)</code></pre>
+<pre class="r"><code>amtk2015</code></pre>
+<pre><code>##  [1]     NA     NA     NA     NA     NA     NA     NA 993721 825353 698656</code></pre>
+<pre class="r"><code>amtk2016</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>amtk2017</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>amtk2018</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>amtk2019</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>amtk2020</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>AMTRAK &lt;- tibble(
+  Station = amtkStationName,
+  City = amtkCity,
+  State = amtkState,
+  Region = amtkRegion,
+  &quot;2015&quot; = amtk2015,
+  &quot;2016&quot; = amtk2016,
+  &quot;2017&quot; = amtk2017,
+  &quot;2018&quot; = amtk2018,
+  &quot;2019&quot; = amtk2019,
+  &quot;2020&quot; = amtk2020
+)
+AMTRAK</code></pre>
+<pre><code>## # A tibble: 10 × 10
+##    Station          City  State Region `2015` `2016` `2017` `2018` `2019` `2020`
+##    &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Penn Station     New … New … Mid-A…     NA     NA     NA     NA     NA     NA
+##  2 Washington Unio… Wash… Dist… Mid-A…     NA     NA     NA     NA     NA     NA
+##  3 30th Street Sta… Phil… Penn… Mid-A…     NA     NA     NA     NA     NA     NA
+##  4 Chicago Union S… Chic… Illi… Midwe…     NA     NA     NA     NA     NA     NA
+##  5 South Station    Bost… Mass… New E…     NA     NA     NA     NA     NA     NA
+##  6 Union Station    Los … Cali… South…     NA     NA     NA     NA     NA     NA
+##  7 Sacramento Vall… Sacr… Cali… South…     NA     NA     NA     NA     NA     NA
+##  8 Penn Station     Balt… Mary… Mid-A… 993721     NA     NA     NA     NA     NA
+##  9 Albany–Renssela… Rens… New … Mid-A… 825353     NA     NA     NA     NA     NA
+## 10 Union Station    New … Conn… New E… 698656     NA     NA     NA     NA     NA</code></pre>
 
 
 

@@ -1,0 +1,117 @@
+---
+title: "actually it's gonna be pax ridership for the top 10 Amtrak stations"
+author: "Gerrit Blauvelt"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(robotstxt)
+paths_allowed("https://en.wikipedia.org/wiki/List_of_busiest_Amtrak_stations")
+paths_allowed("https://new.mta.info/agency/new-york-city-transit/subway-bus-ridership-2020")
+```
+
+```{r}
+amtkstations <- read_html("https://en.wikipedia.org/wiki/List_of_busiest_Amtrak_stations")
+amtkstations
+mta <- read_html("https://new.mta.info/agency/new-york-city-transit/subway-bus-ridership-2020")
+mta
+
+typeof(amtkstations)
+class(amtkstations)
+typeof(mta)
+class(mta)
+
+# amtkRank <- amtkstations %>%
+#   html_nodes("tbody th") %>%
+#   html_text() %>%
+#   str_remove("\\\n") %>%
+ 
+amtkStationName <- amtkstations %>%
+  html_nodes("td:nth-child(2)") %>%
+  html_text() %>%
+  str_remove("\\\n")
+
+amtkCity <- amtkstations %>%
+  html_nodes("td:nth-child(3)") %>%
+  html_text() %>%
+  str_remove("\\\n")
+
+amtkState <- amtkstations %>%
+  html_nodes("td:nth-child(4)") %>%
+  html_text() %>%
+  str_remove("\\\n")
+
+amtkRegion <- amtkstations %>%
+  html_nodes("td:nth-child(5)") %>%
+  html_text() %>%
+  str_remove("\\\n")
+#https://stackoverflow.com/questions/28129554/in-r-remove-commas-from-a-field-and-have-the-modified-field-remain-part-of-the
+amtk2015 <- amtkstations %>%
+  html_nodes("td:nth-child(6)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  str_remove("\\,") %>%
+  as.numeric()
+amtk2016 <- amtkstations %>%
+  html_nodes("td:nth-child(7)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  as.numeric()
+amtk2017 <- amtkstations %>%
+  html_nodes("td:nth-child(8)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  as.numeric()
+amtk2018 <- amtkstations %>%
+  html_nodes("td:nth-child(9)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  as.numeric()
+amtk2019 <- amtkstations %>%
+  html_nodes("td:nth-child(10)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  as.numeric()
+amtk2020 <- amtkstations %>%
+  html_nodes("td:nth-child(11)") %>%
+  html_text() %>%
+  str_remove("\\\n") %>%
+  as.numeric()
+
+amtk2015total <- sum(amtk2015) 
+
+amtk2015total
+
+
+#amtkRank
+amtkStationName
+amtkCity
+amtkState
+amtkRegion
+amtk2015
+amtk2016
+amtk2017
+amtk2018
+amtk2019
+amtk2020
+
+AMTRAK <- tibble(
+  Station = amtkStationName,
+  City = amtkCity,
+  State = amtkState,
+  Region = amtkRegion,
+  "2015" = amtk2015,
+  "2016" = amtk2016,
+  "2017" = amtk2017,
+  "2018" = amtk2018,
+  "2019" = amtk2019,
+  "2020" = amtk2020
+)
+AMTRAK
+
+
+
+```
