@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gerrit Blauvelt" />
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-02" />
 
 <title>actually it’s gonna be pax ridership for the top 10 Amtrak stations</title>
 
@@ -353,7 +353,7 @@ display: none;
 <h1 class="title toc-ignore">actually it’s gonna be pax ridership for
 the top 10 Amtrak stations</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
-<h4 class="date">2023-02-28</h4>
+<h4 class="date">2023-03-02</h4>
 
 </div>
 
@@ -427,54 +427,68 @@ amtkRegion &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(5)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;)
-#https://stackoverflow.com/questions/28129554/in-r-remove-commas-from-a-field-and-have-the-modified-field-remain-part-of-the
+
 amtk2015 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(6)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  str_remove(&quot;\\,&quot;) %&gt;%
-  as.numeric()</code></pre>
-<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(6)&quot;) %&gt;% html_text() %&gt;% :
-## NAs introduced by coercion</code></pre>
-<pre class="r"><code>amtk2016 &lt;- amtkstations %&gt;%
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))} #since this is special, it needs {} and then a . as a data marker for it to pipe properly
+
+amtk2016 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(7)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()</code></pre>
-<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(7)&quot;) %&gt;% html_text() %&gt;% :
-## NAs introduced by coercion</code></pre>
-<pre class="r"><code>amtk2017 &lt;- amtkstations %&gt;%
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))}
+
+amtk2017 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(8)&quot;) %&gt;%
   html_text() %&gt;%
-  str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()</code></pre>
-<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(8)&quot;) %&gt;% html_text() %&gt;% :
-## NAs introduced by coercion</code></pre>
-<pre class="r"><code>amtk2018 &lt;- amtkstations %&gt;%
+  str_remove(&quot;\\\n&quot;)  %&gt;%
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))}
+
+amtk2018 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(9)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()</code></pre>
+  str_remove(&quot;\\[&quot;) %&gt;% #someone was so generous as to include citations in this fiscal year, so each value ends with [x], where x is each citation ref number, so we need to remove the [], and then remove that final floating number
+  str_remove(&quot;\\]&quot;) %&gt;%
+  {as.numeric(gsub(r&quot;{\s*\[[^\]+\)}&quot;,&quot;&quot;,.))} %&gt;% #trying to gsub out the stuff within the [], but no clue how to parse regex or whatever this even is
+  #str_sub(end = -2) %&gt;% #tells R that the string actually starts one character over. I&#39;ll be honest, I don&#39;t quite understand the logic of -2 meaning get rid of the final character, but that&#39;s what the guide said, and it worked --- This worked so well, except for the bit where some of the values have citation numbers that are 10+, meaning it adds 2 chars, not just 1. 
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))}</code></pre>
 <pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(9)&quot;) %&gt;% html_text() %&gt;% :
 ## NAs introduced by coercion</code></pre>
 <pre class="r"><code>amtk2019 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(10)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()</code></pre>
-<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(10)&quot;) %&gt;% html_text() %&gt;% :
-## NAs introduced by coercion</code></pre>
-<pre class="r"><code>amtk2020 &lt;- amtkstations %&gt;%
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))}
+
+amtk2020 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(11)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  as.numeric()</code></pre>
-<pre><code>## Warning in amtkstations %&gt;% html_nodes(&quot;td:nth-child(11)&quot;) %&gt;% html_text() %&gt;% :
-## NAs introduced by coercion</code></pre>
-<pre class="r"><code>amtk2015total &lt;- sum(amtk2015) 
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))}
+
+
+amtk2015total &lt;- sum(amtk2015) 
+amtk2016total &lt;- sum(amtk2016)
+amtk2017total &lt;- sum(amtk2017)
+amtk2018total &lt;- sum(amtk2018)
+amtk2019total &lt;- sum(amtk2019)
+amtk2020total &lt;- sum(amtk2020) 
 
 amtk2015total</code></pre>
+<pre><code>## [1] 29273359</code></pre>
+<pre class="r"><code>amtk2016total</code></pre>
+<pre><code>## [1] 29929604</code></pre>
+<pre class="r"><code>amtk2017total</code></pre>
+<pre><code>## [1] 30274546</code></pre>
+<pre class="r"><code>amtk2018total</code></pre>
 <pre><code>## [1] NA</code></pre>
+<pre class="r"><code>amtk2019total</code></pre>
+<pre><code>## [1] 30580936</code></pre>
+<pre class="r"><code>amtk2020total</code></pre>
+<pre><code>## [1] 15470808</code></pre>
 <pre class="r"><code>#amtkRank
 amtkStationName</code></pre>
 <pre><code>##  [1] &quot;Penn Station&quot;              &quot;Washington Union Station&quot; 
@@ -495,17 +509,22 @@ amtkStationName</code></pre>
 <pre><code>##  [1] &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;Midwest&quot;      &quot;New England&quot; 
 ##  [6] &quot;Southwest&quot;    &quot;Southwest&quot;    &quot;Mid-Atlantic&quot; &quot;Mid-Atlantic&quot; &quot;New England&quot;</code></pre>
 <pre class="r"><code>amtk2015</code></pre>
-<pre><code>##  [1]     NA     NA     NA     NA     NA     NA     NA 993721 825353 698656</code></pre>
+<pre><code>##  [1] 10189521  4971128  4138777  3295630  1544169  1589391  1027013   993721
+##  [9]   825353   698656</code></pre>
 <pre class="r"><code>amtk2016</code></pre>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre><code>##  [1] 10436909  5098562  4328718  3247117  1574450  1635039  1051001  1030161
+##  [9]   885176   642471</code></pre>
 <pre class="r"><code>amtk2017</code></pre>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre><code>##  [1] 10397729  5225460  4411662  3388051  1567627  1716392  1073584  1063628
+##  [9]   803348   627065</code></pre>
 <pre class="r"><code>amtk2018</code></pre>
 <pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
 <pre class="r"><code>amtk2019</code></pre>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre><code>##  [1] 10811323  5207223  4503055  3331527  1585216  1413006  1100550  1043542
+##  [9]   806960   778534</code></pre>
 <pre class="r"><code>amtk2020</code></pre>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre><code>##  [1] 5432851 2606059 2261194 1688452  793113  708925  565196  538330  450965
+## [10]  425723</code></pre>
 <pre class="r"><code>AMTRAK &lt;- tibble(
   Station = amtkStationName,
   City = amtkCity,
@@ -522,16 +541,16 @@ AMTRAK</code></pre>
 <pre><code>## # A tibble: 10 × 10
 ##    Station          City  State Region `2015` `2016` `2017` `2018` `2019` `2020`
 ##    &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1 Penn Station     New … New … Mid-A…     NA     NA     NA     NA     NA     NA
-##  2 Washington Unio… Wash… Dist… Mid-A…     NA     NA     NA     NA     NA     NA
-##  3 30th Street Sta… Phil… Penn… Mid-A…     NA     NA     NA     NA     NA     NA
-##  4 Chicago Union S… Chic… Illi… Midwe…     NA     NA     NA     NA     NA     NA
-##  5 South Station    Bost… Mass… New E…     NA     NA     NA     NA     NA     NA
-##  6 Union Station    Los … Cali… South…     NA     NA     NA     NA     NA     NA
-##  7 Sacramento Vall… Sacr… Cali… South…     NA     NA     NA     NA     NA     NA
-##  8 Penn Station     Balt… Mary… Mid-A… 993721     NA     NA     NA     NA     NA
-##  9 Albany–Renssela… Rens… New … Mid-A… 825353     NA     NA     NA     NA     NA
-## 10 Union Station    New … Conn… New E… 698656     NA     NA     NA     NA     NA</code></pre>
+##  1 Penn Station     New … New … Mid-A… 1.02e7 1.04e7 1.04e7     NA 1.08e7 5.43e6
+##  2 Washington Unio… Wash… Dist… Mid-A… 4.97e6 5.10e6 5.23e6     NA 5.21e6 2.61e6
+##  3 30th Street Sta… Phil… Penn… Mid-A… 4.14e6 4.33e6 4.41e6     NA 4.50e6 2.26e6
+##  4 Chicago Union S… Chic… Illi… Midwe… 3.30e6 3.25e6 3.39e6     NA 3.33e6 1.69e6
+##  5 South Station    Bost… Mass… New E… 1.54e6 1.57e6 1.57e6     NA 1.59e6 7.93e5
+##  6 Union Station    Los … Cali… South… 1.59e6 1.64e6 1.72e6     NA 1.41e6 7.09e5
+##  7 Sacramento Vall… Sacr… Cali… South… 1.03e6 1.05e6 1.07e6     NA 1.10e6 5.65e5
+##  8 Penn Station     Balt… Mary… Mid-A… 9.94e5 1.03e6 1.06e6     NA 1.04e6 5.38e5
+##  9 Albany–Renssela… Rens… New … Mid-A… 8.25e5 8.85e5 8.03e5     NA 8.07e5 4.51e5
+## 10 Union Station    New … Conn… New E… 6.99e5 6.42e5 6.27e5     NA 7.79e5 4.26e5</code></pre>
 
 
 

@@ -48,42 +48,64 @@ amtkRegion <- amtkstations %>%
   html_nodes("td:nth-child(5)") %>%
   html_text() %>%
   str_remove("\\\n")
-#https://stackoverflow.com/questions/28129554/in-r-remove-commas-from-a-field-and-have-the-modified-field-remain-part-of-the
+
 amtk2015 <- amtkstations %>%
   html_nodes("td:nth-child(6)") %>%
   html_text() %>%
   str_remove("\\\n") %>%
-  str_remove("\\,") %>%
-  as.numeric()
+  {as.numeric(gsub(",","",.))} #since this is special, it needs {} and then a . as a data marker for it to pipe properly
+
 amtk2016 <- amtkstations %>%
   html_nodes("td:nth-child(7)") %>%
   html_text() %>%
   str_remove("\\\n") %>%
-  as.numeric()
+  {as.numeric(gsub(",","",.))}
+
 amtk2017 <- amtkstations %>%
   html_nodes("td:nth-child(8)") %>%
   html_text() %>%
-  str_remove("\\\n") %>%
-  as.numeric()
+  str_remove("\\\n")  %>%
+  {as.numeric(gsub(",","",.))}
+
 amtk2018 <- amtkstations %>%
   html_nodes("td:nth-child(9)") %>%
   html_text() %>%
   str_remove("\\\n") %>%
-  as.numeric()
+  str_remove("\\[") %>% #someone was so generous as to include citations in this fiscal year, so each value ends with [x], where x is each citation ref number, so we need to remove the [], and then remove that final floating number
+  str_remove("\\]") %>%
+  {as.numeric(gsub(r"{\s*\[[^\]+\)}","",.))} %>% #trying to gsub out the stuff within the [], but no clue how to parse regex or whatever this even is
+  #str_sub(end = -2) %>% #tells R that the string actually starts one character over. I'll be honest, I don't quite understand the logic of -2 meaning get rid of the final character, but that's what the guide said, and it worked --- This worked so well, except for the bit where some of the values have citation numbers that are 10+, meaning it adds 2 chars, not just 1. 
+  {as.numeric(gsub(",","",.))}
+
+
 amtk2019 <- amtkstations %>%
   html_nodes("td:nth-child(10)") %>%
   html_text() %>%
   str_remove("\\\n") %>%
-  as.numeric()
+  {as.numeric(gsub(",","",.))}
+
 amtk2020 <- amtkstations %>%
   html_nodes("td:nth-child(11)") %>%
   html_text() %>%
   str_remove("\\\n") %>%
-  as.numeric()
+  {as.numeric(gsub(",","",.))}
+
 
 amtk2015total <- sum(amtk2015) 
+amtk2016total <- sum(amtk2016)
+amtk2017total <- sum(amtk2017)
+amtk2018total <- sum(amtk2018)
+amtk2019total <- sum(amtk2019)
+amtk2020total <- sum(amtk2020) 
 
 amtk2015total
+amtk2016total
+amtk2017total
+amtk2018total
+amtk2019total
+amtk2020total
+
+
 
 
 #amtkRank
