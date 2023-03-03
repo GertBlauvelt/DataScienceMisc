@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gerrit Blauvelt" />
 
-<meta name="date" content="2023-03-02" />
+<meta name="date" content="2023-03-03" />
 
 <title>actually it’s gonna be pax ridership for the top 10 Amtrak stations</title>
 
@@ -353,7 +353,7 @@ display: none;
 <h1 class="title toc-ignore">actually it’s gonna be pax ridership for
 the top 10 Amtrak stations</h1>
 <h4 class="author">Gerrit Blauvelt</h4>
-<h4 class="date">2023-03-02</h4>
+<h4 class="date">2023-03-03</h4>
 
 </div>
 
@@ -403,7 +403,7 @@ mta</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <pre class="r"><code>class(mta)</code></pre>
 <pre><code>## [1] &quot;xml_document&quot; &quot;xml_node&quot;</code></pre>
-<pre class="r"><code># amtkRank &lt;- amtkstations %&gt;%
+<pre class="r"><code># amtkRank &lt;- amtkstations %&gt;% #for some reason this one was giving me a character(0) readout, so I just gave up - there were more important issues to work through
 #   html_nodes(&quot;tbody th&quot;) %&gt;%
 #   html_text() %&gt;%
 #   str_remove(&quot;\\\n&quot;) %&gt;%
@@ -432,7 +432,7 @@ amtk2015 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(6)&quot;) %&gt;%
   html_text() %&gt;%
   str_remove(&quot;\\\n&quot;) %&gt;%
-  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))} #since this is special, it needs {} and then a . as a data marker for it to pipe properly
+  {as.numeric(gsub(&quot;,&quot;,&quot;&quot;,.))} #since this is special, it needs to be wrpped with {} and then a . as a data marker for it to pipe properly
 
 amtk2016 &lt;- amtkstations %&gt;%
   html_nodes(&quot;td:nth-child(7)&quot;) %&gt;%
@@ -551,6 +551,20 @@ AMTRAK</code></pre>
 ##  8 Penn Station     Balt… Mary… Mid-A… 9.94e5 1.03e6 1.06e6     NA 1.04e6 5.38e5
 ##  9 Albany–Renssela… Rens… New … Mid-A… 8.25e5 8.85e5 8.03e5     NA 8.07e5 4.51e5
 ## 10 Union Station    New … Conn… New E… 6.99e5 6.42e5 6.27e5     NA 7.79e5 4.26e5</code></pre>
+<pre class="r"><code>AMTRAKTOTALS &lt;- tibble(
+   &quot;2015&quot; = amtk2015total,
+  &quot;2016&quot; = amtk2016total,
+  &quot;2017&quot; = amtk2017total,
+  &quot;2018&quot; = amtk2018total,
+  &quot;2019&quot; = amtk2019total,
+  &quot;2020&quot; = amtk2020total
+)
+
+AMTRAKTOTALS</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##     `2015`   `2016`   `2017` `2018`   `2019`   `2020`
+##      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 29273359 29929604 30274546     NA 30580936 15470808</code></pre>
 
 
 
